@@ -28,7 +28,9 @@ const PostCard: React.FC<{
 }> = ({ post }) => {
   return (
     <View className="rounded-lg border-2 border-gray-500 p-4">
-      <Text className="text-xl font-semibold text-[#cc66ff]">{post.title}</Text>
+      <Text className="text-xl font-semibold text-[#cc66ff]">
+        {post.authorUsername}
+      </Text>
       <Text className="text-white">{post.content}</Text>
     </View>
   );
@@ -60,10 +62,7 @@ const CreatePost: React.FC = () => {
       <TouchableOpacity
         className="rounded bg-[#cc66ff] p-2"
         onPress={() => {
-          mutate({
-            title,
-            content,
-          });
+          mutate(content);
         }}
       >
         <Text className="font-semibold text-white">Publish post</Text>
@@ -101,7 +100,7 @@ export const HomeScreen = () => {
           estimatedItemSize={20}
           ItemSeparatorComponent={() => <View className="h-2" />}
           renderItem={(p) => (
-            <TouchableOpacity onPress={() => setShowPost(p.item.id)}>
+            <TouchableOpacity onPress={() => setShowPost("" + p.item.id)}>
               <PostCard post={p.item} />
             </TouchableOpacity>
           )}
