@@ -12,9 +12,7 @@ const PostCard: React.FC<{
 }> = ({ post }) => {
   return (
     <div className="max-w-2xl rounded-lg border-2 border-gray-500 p-4 transition-all hover:scale-[101%]">
-      <h2 className="text-2xl font-bold text-[hsl(280,100%,70%)]">
-        {post.title}
-      </h2>
+      <h2 className="text-2xl font-bold text-[hsl(280,100%,70%)]">{post.id}</h2>
       <p>{post.content}</p>
     </div>
   );
@@ -40,7 +38,7 @@ const Home: NextPage = () => {
           <div className="flex h-[60vh] justify-center overflow-y-scroll px-4 text-2xl">
             {postQuery.data ? (
               <div className="flex flex-col gap-4">
-                {postQuery.data?.map((p: { id: Key | null | undefined }) => {
+                {postQuery.data?.map((p) => {
                   return <PostCard key={p.id} post={p} />;
                 })}
               </div>

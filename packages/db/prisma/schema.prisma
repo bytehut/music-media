@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -16,6 +16,7 @@ model User {
   username   String?   @unique
   followedBy Follows[] @relation("following")
   following  Follows[] @relation("follower")
+  posts      Post[]
 }
 
 model Follows {
@@ -27,4 +28,13 @@ model Follows {
   @@id([followerId, followingId])
   @@index([followingId])
   @@index([followerId])
+}
+
+model Post {
+  id             Int    @id @default(autoincrement())
+  author         User   @relation(fields: [authorUsername], references: [username])
+  authorUsername String
+  content        String @db.VarChar(255)
+
+  @@index([authorUsername])
 }

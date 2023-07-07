@@ -6,11 +6,14 @@ export const postRouter = router({
     return ctx.prisma.post.findMany();
   }),
   byId: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.prisma.post.findFirst({ where: { id: input } });
+    return ctx.prisma.post.findFirst({ where: { id: parseInt(input) } });
   }),
-  create: protectedProcedure
-    .input(z.object({ title: z.string(), content: z.string() }))
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.post.create({ data: input });
-    }),
+  create: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    return ctx.prisma.post.create({
+      data: {
+        content: input,
+        authorUsername: "test",
+      },
+    });
+  }),
 });
