@@ -1,6 +1,7 @@
 import { protectedProcedure, publicProcedure, router } from "../trpc";
 import crypto from "crypto";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 
 function generateCodeVerifier() {
   // Generate random bytes
@@ -59,7 +60,9 @@ export const spotifyAuthRouter = router({
     const authUrl = new URL(authUrlString);
     return authUrl;
   }),
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can see this secret message!";
-  }),
+  handleCallback: publicProcedure
+    .input(z.object({ code: z.string(), state: z.string() }))
+    .query(({ ctx, input }) => {
+      return "you can see this secret message!";
+    }),
 });
