@@ -5,7 +5,7 @@ import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 import { useAuth, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { Key } from "react";
+import { useRouter } from "next/router";
 
 const PostCard: React.FC<{
   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
@@ -34,7 +34,7 @@ const Home: NextPage = () => {
           {/* <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
             Create <span className="text-lilac">T3</span> Turbo
           </h1> */}
-
+          <SpotifyAuth />
           <AuthShowcase />
 
           <div className="flex h-[60vh] justify-center overflow-y-scroll px-4 text-2xl">
@@ -55,6 +55,24 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+const SpotifyAuth: React.FC = () => {
+  const router = useRouter();
+  // fetch authorize URL
+  const { data: authUrl } = trpc.spotifyAuth.getAuthUrl.useQuery();
+
+  return (
+    <button
+      onClick={() => {
+        if (authUrl !== undefined) {
+          router.push(authUrl);
+        }
+      }}
+    >
+      Login with Spotify
+    </button>
+  );
+};
 
 const AuthShowcase: React.FC = () => {
   const { isSignedIn } = useAuth();

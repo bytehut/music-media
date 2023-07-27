@@ -6,6 +6,7 @@ import type {
   SignedInAuthObject,
   SignedOutAuthObject,
 } from "@clerk/nextjs/api";
+import dotenv from "dotenv";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -20,9 +21,11 @@ type AuthContextProps = {
  * @see https://beta.create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
 export const createContextInner = async ({ auth }: AuthContextProps) => {
+  dotenv.config();
   return {
     auth,
     prisma,
+    env: process.env,
   };
 };
 
